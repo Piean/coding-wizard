@@ -1,0 +1,25 @@
+<idea-plugin>
+    <id>com.piean.idea-plugin.coding-aide</id>
+    <name>Coding-Aide</name>
+    <vendor email="yds4744@163.com" url="https://github.com/Piean">Piean-Lamp</vendor>
+
+    <description><![CDATA[
+    <p>My Idea plugin for MyBatis and other code helper</p>
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="bean.setter" class="com.piean.idea.plugin.codeing.view.BeanSetterAction" text="GenerateAllSetter"
+                description="Generate all setter For An object">
+            <add-to-group group-id="ViewMenu" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
