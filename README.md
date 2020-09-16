@@ -1,2 +1,2 @@
-# coding-aide
+# coding-wizard
 The plugin of idea

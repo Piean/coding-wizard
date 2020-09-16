@@ -1,14 +1,18 @@
 <idea-plugin>
-    <id>com.piean.idea-plugin.coding-aide</id>
-    <name>Coding-Aide</name>
+    <id>com.piean.idea-plugin.coding-wizard</id>
+    <name>Coding-Wizard</name>
     <vendor email="yds4744@163.com" url="https://github.com/Piean">Piean-Lamp</vendor>
 
     <description><![CDATA[
     <p>My Idea plugin for MyBatis and other code helper</p>
     ]]></description>
 
+    <idea-version since-build="202"/>
+
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -17,9 +21,30 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="bean.setter" class="com.piean.idea.plugin.codeing.view.BeanSetterAction" text="GenerateAllSetter"
-                description="Generate all setter For An object">
-            <add-to-group group-id="ViewMenu" anchor="first"/>
-        </action>
+        <group id="com.piean.idea.plugin.coding.GroupedToolMenu" text="Coding-Wizard" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action id="com.piean.idea.plugin.coding.view.MyBatisCodingAction"
+                    class="com.piean.idea.plugin.coding.view.MyBatisCodingAction" text="MyBatis-Config"
+                    description="Coding-wizard base view">
+            </action>
+        </group>
+
+        <group id="com.piean.idea.plugin.coding.GroupedGenerate" text="Coding-Wizard" popup="true">
+            <add-to-group group-id="GenerateGroup" anchor="first"/>
+            <action id="com.piean.idea.plugin.coding.view.BeanSetterAction" text="AllSetter"
+                    class="com.piean.idea.plugin.coding.view.BeanSetterAction"
+                    description="Generate all setter For An object">
+            </action>
+            <action id="com.piean.idea.plugin.coding.view.BeanCopyAction" text="BeanCopy"
+                    class="com.piean.idea.plugin.coding.view.BeanCopyAction"
+                    description="Generate all setter For An object">
+            </action>
+        </group>
+
+        <!--        <action id="com.piean.idea.plugin.coding.view.bean.setter" text="GenerateAllSetter"-->
+        <!--                class="com.piean.idea.plugin.coding.view.BeanSetterAction"-->
+        <!--                description="Generate all setter For An object">-->
+        <!--            <add-to-group group-id="GenerateGroup" anchor="first"/>-->
+        <!--        </action>-->
     </actions>
 </idea-plugin>

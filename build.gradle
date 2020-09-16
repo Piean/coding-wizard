@@ -8,18 +8,34 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+runIde {
+    autoReloadPlugins = true
+}
+
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2020.2.1'
+    version = '2020.2.1'
+    pluginName = 'Coding-Wizard'
+    type = 'IC'
+    downloadSources = true
+    updateSinceUntilBuild = false
+    setPlugins("java")
 }
+
 patchPluginXml {
     changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+      <em>Generate All Setter</em>
+      <em>Copy properties use getter and setter</em>
+      """
+}
+publishPlugin {
+    token System.getenv("intellij_plugin_publish_token")
+//    args:-Dintellij.plugin.publish.token=perm:cGllYW4=.OTItMjU4Mw==.8EHNB1nFJKoXzvNtITS5mmEHGMWPPj
 }
