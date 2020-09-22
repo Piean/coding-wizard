@@ -36,5 +36,5 @@ patchPluginXml {
       """
 }
 publishPlugin {
-    token System.getenv("intellij_plugin_publish_token")
+    token = "perm:cGllYW4=.OTItMjU4Mw==.8EHNB1nFJKoXzvNtITS5mmEHGMWPPj"
 }

@@ -4,7 +4,12 @@
     <vendor email="yds4744@163.com" url="https://github.com/Piean">Piean-Lamp</vendor>
 
     <description><![CDATA[
-    <p>My Idea plugin for MyBatis and other code helper</p>
+    <p>The Idea plugin for MyBatis and other code helper</p>
+    <pre>
+      <li>Generate All Setter</li>
+      <li>BeanCopy Use Getter And Setter</li>
+      <li>MyBatis Helper(future)</li>
+    </pre>
     ]]></description>
 
     <idea-version since-build="202"/>
