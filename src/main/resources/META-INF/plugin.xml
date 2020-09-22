@@ -6,9 +6,14 @@
     <description><![CDATA[
     <p>The Idea plugin for MyBatis and other code helper</p>
     <pre>
+      <p>Feature</p>
       <li>Generate All Setter</li>
       <li>BeanCopy Use Getter And Setter</li>
       <li>MyBatis Helper(future)</li>
+      <p>Usage</p>
+      <li>Put the cursor on the instance variable, then press "Alt+Insert" and select "AllSetter"</li>
+      <li>Put the cursor on the instance variable, then press "Alt+Insert" and select "BeanCopy", that required select an other variable in popup</li>
+      <li>MyBatis Helper is developing</li>
     </pre>
     ]]></description>
 
