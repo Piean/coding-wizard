@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.piean.idea-plugin'
-version '1.0.1'
+version '1.0.2'
 
 repositories {
     mavenCentral()
@@ -22,19 +22,21 @@ runIde {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = '2020.2.1'
-    pluginName = 'Coding-Wizard'
     type = 'IC'
-    downloadSources = true
+    pluginName = 'Coding-Wizard'
+    downloadSources = false
     updateSinceUntilBuild = false
     setPlugins("java")
 }
 
 patchPluginXml {
     changeNotes """
-      <em>Generate All Setter</em>
-      <em>Copy properties use getter and setter</em>
+      <em>feature:Configure the package path to filter your own project's classes.</em>
+      <em>feature:Extracting the getter/setter method is more precise.</em>
+      <em>fix:BeanCopy used the wrong getter method.</em>
       """
 }
 publishPlugin {
-    token = "perm:cGllYW4=.OTItMjU4Mw==.8EHNB1nFJKoXzvNtITS5mmEHGMWPPj"
+    host = "https://plugins.jetbrains.com"
+    token = System.getenv("publish.token")
 }

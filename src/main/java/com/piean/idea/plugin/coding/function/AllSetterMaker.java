@@ -1,5 +1,6 @@
 package com.piean.idea.plugin.coding.function;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiLocalVariable;
 import com.intellij.psi.PsiMethod;
@@ -13,18 +14,20 @@ import java.util.List;
  * @since 2020/9/15
  */
 public class AllSetterMaker {
+    private final Project project;
     private final PsiClass psiClass;
     private final PsiLocalVariable variable;
     private final String whitespace;
 
-    public AllSetterMaker(PsiClass psiClass, PsiLocalVariable variable, int blankLength) {
+    public AllSetterMaker(Project project, PsiClass psiClass, PsiLocalVariable variable, int blankLength) {
+        this.project = project;
         this.psiClass = psiClass;
         this.variable = variable;
         this.whitespace = StringUtils.center("", blankLength);
     }
 
     public String output() {
-        List<PsiMethod> methods = WizardPsiUtil.extractSetMethod(psiClass);
+        List<PsiMethod> methods = WizardPsiUtil.extractSetMethod(project, psiClass);
         String variableName = variable.getName();
         StringBuilder sb = new StringBuilder();
         methods.forEach(m -> {

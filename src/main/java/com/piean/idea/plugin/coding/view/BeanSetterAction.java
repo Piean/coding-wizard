@@ -41,14 +41,14 @@ public class BeanSetterAction extends AnAction {
             final PsiLocalVariable variable = PsiTreeUtil.getParentOfType(psiElement, PsiLocalVariable.class);
             Asserts.notNull(variable, HintMsg.NEED_LOCAL_VARIABLE);
             final PsiClass psiClass = PsiTypesUtil.getPsiClass(variable.getType());
-            if (psiClass == null || WizardPsiUtil.isJDKClass(psiClass)) {
+            if (WizardPsiUtil.isUserClass(project, psiClass)) {
                 Notifier.warn(project, "Not user-level class");
                 return;
             }
             final Document document = editor.getDocument();
             PsiElement statement = variable.getParent();
             int length = statement.getTextOffset() - caretModel.getVisualLineStart();
-            AllSetterMaker allSetterMaker = new AllSetterMaker(psiClass, variable, length);
+            AllSetterMaker allSetterMaker = new AllSetterMaker(project, psiClass, variable, length);
             String output = allSetterMaker.output();
             DocumentWriter writer = new DocumentWriter(project, document);
             int offset = statement.getTextOffset() + statement.getTextLength();

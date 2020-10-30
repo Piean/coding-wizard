@@ -10,10 +10,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.ListPopup;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiLocalVariable;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.piean.idea.plugin.coding.dialog.VariableSelectionPopupStep;
@@ -44,14 +41,14 @@ public class BeanCopyAction extends AnAction {
             final PsiLocalVariable variable = PsiTreeUtil.getParentOfType(psiElement, PsiLocalVariable.class);
             Asserts.notNull(variable, HintMsg.NEED_LOCAL_VARIABLE);
             final PsiClass psiClass = PsiTypesUtil.getPsiClass(variable.getType());
-            if (psiClass == null || WizardPsiUtil.isJDKClass(psiClass)) {
-                Notifier.warn(project, "Not user-level class");
+            if (!WizardPsiUtil.isUserClass(project, psiClass)) {
+                Notifier.warn(project, "[" + variable.getName() + "] Not a user-level class instance, place check user-level packages config");
                 return;
             }
 
             final Document document = editor.getDocument();
             final PsiElement parent = variable.getParent();
-            Map<String, PsiLocalVariable> blockVariables = WizardPsiUtil.getBlockVariables(variable);
+            Map<String, PsiVariable> blockVariables = WizardPsiUtil.getBlockVariables(project, variable);
             blockVariables.remove(psiClass.getQualifiedName() + " : " + variable.getName());
             VariableSelectionPopupStep step = new VariableSelectionPopupStep(project, document, parent, psiClass, variable, caretModel, blockVariables);
             ListPopup popup = JBPopupFactory.getInstance().createListPopup(step);

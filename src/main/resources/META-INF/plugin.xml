@@ -5,16 +5,19 @@
 
     <description><![CDATA[
     <p>The Idea plugin for MyBatis and other code helper</p>
-    <pre>
-      <p>Feature</p>
+    <h4>Feature</h4>
+    <ul>
       <li>Generate All Setter</li>
       <li>BeanCopy Use Getter And Setter</li>
       <li>MyBatis Helper(future)</li>
-      <p>Usage</p>
+    </ul>
+    <h4>Usage</h4>
+    <ul>
       <li>Put the cursor on the instance variable, then press "Alt+Insert" and select "AllSetter"</li>
-      <li>Put the cursor on the instance variable, then press "Alt+Insert" and select "BeanCopy", that required select an other variable in popup</li>
+      <li>Put the cursor on the instance variable, then press "Alt+Insert" and select "BeanCopy", that required select an
+        other variable in popup</li>
       <li>MyBatis Helper is developing</li>
-    </pre>
+    </ul>
     ]]></description>
 
     <idea-version since-build="202"/>
@@ -26,7 +29,10 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <projectService serviceImplementation="com.piean.idea.plugin.coding.config.ProjectSettingsState"/>
+        <projectConfigurable parentId="tools" instance="com.piean.idea.plugin.coding.config.ProjectSettingsConfigurable"
+                             id="com.piean.idea.plugin.coding.config.ProjectSettingsConfigurable"
+                             displayName="Coding Wizard" nonDefaultProject="true"/>
     </extensions>
 
     <actions>
@@ -50,11 +56,5 @@
                     description="Generate all setter For An object">
             </action>
         </group>
-
-        <!--        <action id="com.piean.idea.plugin.coding.view.bean.setter" text="GenerateAllSetter"-->
-        <!--                class="com.piean.idea.plugin.coding.view.BeanSetterAction"-->
-        <!--                description="Generate all setter For An object">-->
-        <!--            <add-to-group group-id="GenerateGroup" anchor="first"/>-->
-        <!--        </action>-->
     </actions>
 </idea-plugin>

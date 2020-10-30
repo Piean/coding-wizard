@@ -1,8 +1,10 @@
 package com.piean.idea.plugin.coding.function;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiLocalVariable;
 import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiVariable;
 import com.piean.idea.plugin.coding.tool.WizardPsiUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,13 +15,15 @@ import java.util.List;
  * @since 2020/9/15
  */
 public class BeanCopyMaker {
+    private final Project project;
     private final PsiClass sourceClass;
-    private final PsiLocalVariable sourceVariable;
+    private final PsiVariable sourceVariable;
     private final PsiClass targetClass;
     private final PsiLocalVariable targetVariable;
     private final String whitespace;
 
-    public BeanCopyMaker(PsiClass sourceClass, PsiLocalVariable sourceVariable, PsiClass targetClass, PsiLocalVariable targetVariable, int blankLength) {
+    public BeanCopyMaker(Project project, PsiClass sourceClass, PsiVariable sourceVariable, PsiClass targetClass, PsiLocalVariable targetVariable, int blankLength) {
+        this.project = project;
         this.sourceClass = sourceClass;
         this.sourceVariable = sourceVariable;
         this.targetClass = targetClass;
@@ -28,9 +32,9 @@ public class BeanCopyMaker {
     }
 
     public String output() {
-        List<PsiMethod> setMethods = WizardPsiUtil.extractSetMethod(targetClass);
+        List<PsiMethod> setMethods = WizardPsiUtil.extractSetMethod(project, targetClass);
         String targetVariableName = targetVariable.getName();
-        List<PsiMethod> getMethods = WizardPsiUtil.extractGetMethod(sourceClass);
+        List<PsiMethod> getMethods = WizardPsiUtil.extractGetMethod(project, sourceClass);
         String sourceVariableName = sourceVariable.getName();
         StringBuilder sb = new StringBuilder();
         setMethods.forEach(m -> {

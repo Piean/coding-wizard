@@ -1,9 +1,9 @@
 package com.piean.idea.plugin.coding.tool;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
-import com.intellij.psi.util.PsiUtil;
+import com.piean.idea.plugin.coding.config.ProjectSettingsState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -22,10 +22,21 @@ public class WizardPsiUtil {
         return className == null || className.startsWith("java.");
     }
 
-    public static List<PsiMethod> extractSetMethod(PsiClass psiClass) {
+    public static boolean isUserClass(Project project, PsiClass psiClass) {
+        if (psiClass == null) {
+            return false;
+        }
+        boolean isNotJDK = !isJDKClass(psiClass);
+        ProjectSettingsState state = ProjectSettingsState.getInstance(project);
+        String packages = state.getUserPackages();
+        boolean isInPackage = Objects.requireNonNull(psiClass.getQualifiedName()).startsWith(packages);
+        return isNotJDK && isInPackage;
+    }
+
+    public static List<PsiMethod> extractSetMethod(Project project, PsiClass psiClass) {
         List<PsiMethod> methods = new LinkedList<>();
         PsiClass clazz = psiClass;
-        while (clazz != null && !isJDKClass(clazz)) {
+        while (isUserClass(project, clazz)) {
             for (PsiMethod m : clazz.getMethods()) {
                 if (!isSetter(m)) {
                     continue;
@@ -37,10 +48,10 @@ public class WizardPsiUtil {
         return methods;
     }
 
-    public static List<PsiMethod> extractGetMethod(PsiClass psiClass) {
+    public static List<PsiMethod> extractGetMethod(Project project, PsiClass psiClass) {
         List<PsiMethod> methods = new LinkedList<>();
         PsiClass clazz = psiClass;
-        while (clazz != null && !isJDKClass(clazz)) {
+        while (isUserClass(project, clazz)) {
             for (PsiMethod m : clazz.getMethods()) {
                 if (!isGetter(m)) {
                     continue;
@@ -55,33 +66,39 @@ public class WizardPsiUtil {
     public static boolean isSetter(@NotNull PsiMethod m) {
         return m.hasModifierProperty(PsiModifier.PUBLIC)
                 && !m.hasModifierProperty(PsiModifier.STATIC)
-                && m.getName().startsWith("set");
+                && m.getName().startsWith("set")
+                && m.hasParameters();
     }
 
     public static boolean isGetter(@NotNull PsiMethod m) {
         return m.hasModifierProperty(PsiModifier.PUBLIC)
                 && !m.hasModifierProperty(PsiModifier.STATIC)
-                && (m.getName().startsWith("get") || m.getName().startsWith("is"));
+                && (m.getName().startsWith("get") || m.getName().startsWith("is"))
+                && !m.hasParameters();
     }
 
-    public static Map<String, PsiLocalVariable> getBlockVariables(PsiLocalVariable localVariable) {
-        PsiCodeBlock psiCodeBlock = (PsiCodeBlock) PsiUtil.getVariableCodeBlock(localVariable, localVariable.getParent());
-        if (psiCodeBlock == null) {
-            return Collections.emptyMap();
-        }
-        PsiStatement[] statements = psiCodeBlock.getStatements();
-        Map<String, PsiLocalVariable> options = new HashMap<>(1);
-        for (PsiStatement statement : statements) {
-            PsiLocalVariable ov = PsiTreeUtil.getChildOfType(statement, PsiLocalVariable.class);
-            if (ov == null) {
-                continue;
+    public static Map<String, PsiVariable> getBlockVariables(Project project, PsiLocalVariable localVariable) {
+        Map<String, PsiVariable> options = new HashMap<>(2);
+        final PsiFile file = localVariable.getContainingFile();
+        file.accept(new JavaRecursiveElementVisitor() {
+            @Override
+            public void visitVariable(PsiVariable variable) {
+                super.visitVariable(variable);
+                final PsiClass vc = PsiTypesUtil.getPsiClass(variable.getType());
+                if (isUserClass(project, vc)) {
+                    options.put(variable.getName() + " : " + vc.getQualifiedName(), variable);
+                }
             }
-            final PsiClass oc = PsiTypesUtil.getPsiClass(ov.getType());
-            if (oc == null || WizardPsiUtil.isJDKClass(oc)) {
-                continue;
+
+            @Override
+            public void visitField(PsiField field) {
+                super.visitField(field);
+                final PsiClass fc = PsiTypesUtil.getPsiClass(field.getType());
+                if (isUserClass(project, fc)) {
+                    options.put(field.getName() + " : " + fc.getQualifiedName(), field);
+                }
             }
-            options.put(oc.getQualifiedName() + " : " + ov.getName(), ov);
-        }
+        });
         return options;
     }
 
