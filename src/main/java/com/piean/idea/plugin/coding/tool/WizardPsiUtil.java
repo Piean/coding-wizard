@@ -34,10 +34,10 @@ public class WizardPsiUtil {
     }
 
     public static List<PsiMethod> extractSetMethod(Project project, PsiClass psiClass) {
-        List<PsiMethod> methods = new LinkedList<>();
+        Set<PsiMethod> methods = new LinkedHashSet<>();
         PsiClass clazz = psiClass;
         while (isUserClass(project, clazz)) {
-            for (PsiMethod m : clazz.getMethods()) {
+            for (PsiMethod m : clazz.getAllMethods()) {
                 if (!isSetter(m)) {
                     continue;
                 }
@@ -45,11 +45,11 @@ public class WizardPsiUtil {
             }
             clazz = clazz.getSuperClass();
         }
-        return methods;
+        return new ArrayList<>(methods);
     }
 
     public static List<PsiMethod> extractGetMethod(Project project, PsiClass psiClass) {
-        List<PsiMethod> methods = new LinkedList<>();
+        Set<PsiMethod> methods = new LinkedHashSet<>();
         PsiClass clazz = psiClass;
         while (isUserClass(project, clazz)) {
             for (PsiMethod m : clazz.getMethods()) {
@@ -60,7 +60,7 @@ public class WizardPsiUtil {
             }
             clazz = clazz.getSuperClass();
         }
-        return methods;
+        return new ArrayList<>(methods);
     }
 
     public static boolean isSetter(@NotNull PsiMethod m) {

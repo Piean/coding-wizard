@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.piean.idea-plugin.coding-wizard</id>
     <name>Coding-Wizard</name>
-    <vendor email="yds4744@163.com" url="https://github.com/Piean">Piean-Lamp</vendor>
+    <vendor email="yds4744@163.com" url="https://github.com/Piean/coding-wizard">Piean-Lamp</vendor>
 
     <description><![CDATA[
     <p>The Idea plugin for MyBatis and other code helper</p>

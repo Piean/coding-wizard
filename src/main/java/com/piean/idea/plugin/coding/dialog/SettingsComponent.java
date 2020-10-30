@@ -19,7 +19,7 @@ public class SettingsComponent {
         myMainPanel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(new JBLabel("Enter user level packages:"), userLevelPackage, 1, false)
 //                .addComponent(enableAllSetter, 1)
-//                .addComponentFillVertically(new JPanel(), 0)
+                .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
 

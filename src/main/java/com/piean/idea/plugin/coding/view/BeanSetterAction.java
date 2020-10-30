@@ -41,8 +41,8 @@ public class BeanSetterAction extends AnAction {
             final PsiLocalVariable variable = PsiTreeUtil.getParentOfType(psiElement, PsiLocalVariable.class);
             Asserts.notNull(variable, HintMsg.NEED_LOCAL_VARIABLE);
             final PsiClass psiClass = PsiTypesUtil.getPsiClass(variable.getType());
-            if (WizardPsiUtil.isUserClass(project, psiClass)) {
-                Notifier.warn(project, "Not user-level class");
+            if (!WizardPsiUtil.isUserClass(project, psiClass)) {
+                Notifier.warn(project, "[" + variable.getName() + "] Not a user-level class instance, place check user-level packages config");
                 return;
             }
             final Document document = editor.getDocument();
