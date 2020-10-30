@@ -10,6 +10,7 @@ Generate setter method for all variables of an object quickly.
 ![avatar](wd/images/setter.gif)
 ### Bean Copy
 Use getter and setter methods to copy object quickly.
+Config your project package prefix will make plugin filter the inessential variables.
 ![avatar](wd/images/beancopy.gif)
 ## Contributing
 Contributions are welcome! Open a pull request to fix a bug, or open an Issue to discuss a new feature or change.
