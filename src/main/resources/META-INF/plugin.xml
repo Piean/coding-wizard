@@ -33,6 +33,16 @@
         <projectConfigurable parentId="tools" instance="com.piean.idea.plugin.coding.config.ProjectSettingsConfigurable"
                              id="com.piean.idea.plugin.coding.config.ProjectSettingsConfigurable"
                              displayName="Coding Wizard" nonDefaultProject="true"/>
+
+        <dom.fileMetaData rootTagName="mapper" implementation="com.piean.idea.plugin.coding.dom.description.MapperXmlFileDescription" domVersion="1"/>
+
+        <!-- LineMarker -->
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.piean.idea.plugin.coding.provider.MapperLineMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="XML" implementationClass="com.piean.idea.plugin.coding.provider.MybatisXmlLineMarkerProvider"/>
+
+        <!-- Inspection -->
+        <localInspection language="XML" groupName="Coding-Wizard" shortName="MybatisXmlInspection" enabledByDefault="true" level="ERROR"
+                         displayName="Mapper xml inspection" implementationClass="com.piean.idea.plugin.coding.inspection.MybatisXmlInspection"/>
     </extensions>
 
     <actions>

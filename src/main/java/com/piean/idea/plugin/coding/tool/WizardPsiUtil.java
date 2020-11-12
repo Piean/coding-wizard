@@ -2,9 +2,12 @@ package com.piean.idea.plugin.coding.tool;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.piean.idea.plugin.coding.config.ProjectSettingsState;
+import org.apache.commons.lang.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -125,5 +128,17 @@ public class WizardPsiUtil {
             }
         }
         return getter;
+    }
+
+    public static Optional<PsiClass> findClass(@NotNull Project project, @NotNull String clazzName) {
+        return Optional.ofNullable(JavaPsiFacade.getInstance(project).findClass(clazzName, GlobalSearchScope.projectScope(project)));
+    }
+
+    public static Optional<PsiMethod> findMethod(@NotNull Project project, @Nullable String clazzName, @Nullable String methodName) {
+        Optional<PsiClass> optional = findClass(project, Objects.requireNonNull(clazzName));
+        return optional.map(clazz -> {
+            PsiMethod[] methods = clazz.findMethodsByName(methodName, true);
+            return ArrayUtils.isEmpty(methods) ? Optional.<PsiMethod>empty() : Optional.of(methods[0]);
+        }).orElse(Optional.empty());
     }
 }
