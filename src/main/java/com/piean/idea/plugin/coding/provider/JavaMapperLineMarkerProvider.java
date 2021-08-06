@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author <a href="mailto:dishuang.yang@yunhuyj.com">mogu</a>
  * @since 2020/11/10
  */
-public class MapperLineMarkerProvider extends RelatedItemLineMarkerProvider {
+public class JavaMapperLineMarkerProvider extends RelatedItemLineMarkerProvider {
     @Override
     protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo<?>> result) {
         CommonProcessors.CollectProcessor<DomElement> processor = new CommonProcessors.CollectProcessor<>();

@@ -37,7 +37,7 @@
         <dom.fileMetaData rootTagName="mapper" implementation="com.piean.idea.plugin.coding.dom.description.MapperXmlFileDescription" domVersion="1"/>
 
         <!-- LineMarker -->
-        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.piean.idea.plugin.coding.provider.MapperLineMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.piean.idea.plugin.coding.provider.JavaMapperLineMarkerProvider"/>
         <codeInsight.lineMarkerProvider language="XML" implementationClass="com.piean.idea.plugin.coding.provider.MybatisXmlLineMarkerProvider"/>
 
         <!-- Inspection -->

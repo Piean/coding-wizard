@@ -54,7 +54,6 @@ public class MybatisXmlLineMarkerProvider implements LineMarkerProvider {
         if (!(element instanceof XmlToken)) {
             return false;
         }
-        DomElement domElement = DomUtil.getDomElement(element);
         return TARGET_TOKEN.contains(element.getText()) && Objects.equals(element.getPrevSibling().getText(), "<");
     }
 
