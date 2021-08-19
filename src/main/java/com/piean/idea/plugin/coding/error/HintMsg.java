@@ -7,6 +7,7 @@ package com.piean.idea.plugin.coding.error;
 public enum HintMsg {
     NEED_PROJECT("Need a project"),
     NEED_LOCAL_VARIABLE("Please use it on instance variables"),
+    NEED_NAME_IDENTIFIER("Need name identifier"),
     ;
     private final String msg;
 

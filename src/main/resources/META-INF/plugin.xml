@@ -39,22 +39,26 @@
         <!-- Add your actions here -->
         <group id="com.piean.idea.plugin.coding.GroupedToolMenu" text="Coding-Wizard" popup="true">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <action id="com.piean.idea.plugin.coding.view.MyBatisCodingAction"
-                    class="com.piean.idea.plugin.coding.view.MyBatisCodingAction" text="MyBatis-Config"
+            <action id="com.piean.idea.plugin.coding.action.MyBatisCodingAction"
+                    class="com.piean.idea.plugin.coding.action.MyBatisCodingAction" text="MyBatis-Config"
                     description="Coding-wizard base view">
             </action>
         </group>
 
         <group id="com.piean.idea.plugin.coding.GroupedGenerate" text="Coding-Wizard" popup="true">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
-            <action id="com.piean.idea.plugin.coding.view.BeanSetterAction" text="AllSetter"
-                    class="com.piean.idea.plugin.coding.view.BeanSetterAction"
+            <action id="com.piean.idea.plugin.coding.action.BeanSetterAction" text="AllSetter"
+                    class="com.piean.idea.plugin.coding.action.BeanSetterAction"
                     description="Generate all setter For An object">
             </action>
-            <action id="com.piean.idea.plugin.coding.view.BeanCopyAction" text="BeanCopy"
-                    class="com.piean.idea.plugin.coding.view.BeanCopyAction"
+            <action id="com.piean.idea.plugin.coding.action.BeanCopyAction" text="BeanCopy"
+                    class="com.piean.idea.plugin.coding.action.BeanCopyAction"
                     description="Generate all setter For An object">
             </action>
         </group>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <annotator language="JAVA" implementationClass="com.piean.idea.plugin.coding.action.ClassQuickFixAnnotator"/>
+    </extensions>
 </idea-plugin>

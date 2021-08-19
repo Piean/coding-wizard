@@ -1,4 +1,4 @@
-package com.piean.idea.plugin.coding.view;
+package com.piean.idea.plugin.coding.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

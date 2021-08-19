@@ -1,4 +1,4 @@
-package com.piean.idea.plugin.coding.view;
+package com.piean.idea.plugin.coding.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -8,27 +8,27 @@ import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiLocalVariable;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.openapi.ui.popup.ListPopup;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
+import com.piean.idea.plugin.coding.dialog.VariableSelectionPopupStep;
 import com.piean.idea.plugin.coding.error.HintMsg;
 import com.piean.idea.plugin.coding.error.WizardException;
-import com.piean.idea.plugin.coding.function.AllSetterMaker;
-import com.piean.idea.plugin.coding.function.DocumentWriter;
 import com.piean.idea.plugin.coding.tool.Asserts;
 import com.piean.idea.plugin.coding.tool.Notifier;
 import com.piean.idea.plugin.coding.tool.WizardPsiUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
 /**
  * @author <a href="mailto:yds4744@163.com">Piean</a>
- * @since 2020/9/8
+ * @since 2020/9/15
  */
 @SuppressWarnings("DuplicatedCode")
-public class BeanSetterAction extends AnAction {
+public class BeanCopyAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         final Project project = e.getData(CommonDataKeys.PROJECT);
@@ -45,14 +45,14 @@ public class BeanSetterAction extends AnAction {
                 Notifier.warn(project, "[" + variable.getName() + "] Not a user-level class instance, place check user-level packages config");
                 return;
             }
+
             final Document document = editor.getDocument();
-            PsiElement statement = variable.getParent();
-            int length = statement.getTextOffset() - caretModel.getVisualLineStart();
-            AllSetterMaker allSetterMaker = new AllSetterMaker(project, psiClass, variable, length);
-            String output = allSetterMaker.output();
-            DocumentWriter writer = new DocumentWriter(project, document);
-            int offset = statement.getTextOffset() + statement.getTextLength();
-            writer.insert(offset, output);
+            final PsiElement parent = variable.getParent();
+            Map<String, PsiVariable> blockVariables = WizardPsiUtil.getBlockVariables(project, variable);
+            blockVariables.remove(psiClass.getQualifiedName() + " : " + variable.getName());
+            VariableSelectionPopupStep step = new VariableSelectionPopupStep(project, document, parent, psiClass, variable, caretModel, blockVariables);
+            ListPopup popup = JBPopupFactory.getInstance().createListPopup(step);
+            popup.showInBestPositionFor(editor);
         } catch (WizardException we) {
             Notifier.error(project, we.getMessage());
         }

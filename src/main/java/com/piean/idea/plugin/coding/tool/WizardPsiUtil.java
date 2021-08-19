@@ -13,6 +13,12 @@ import java.util.*;
  * @since 2020/9/15
  */
 public class WizardPsiUtil {
+    public static boolean isSerializableClass(PsiClass psiClass) {
+        PsiReferenceList list = psiClass.getImplementsList();
+        list.getReferenceElements();
+        return true;
+    }
+
     public static boolean isVariable(PsiElement psiElement) {
         return psiElement instanceof PsiVariable;
     }
@@ -125,5 +131,17 @@ public class WizardPsiUtil {
             }
         }
         return getter;
+    }
+
+    public static PsiField findSerialVersionUID(PsiField[] fields) {
+        if (fields == null) {
+            return null;
+        }
+        for (PsiField field : fields) {
+            if (Objects.equals("serialVersionUID", field.getName())) {
+                return field;
+            }
+        }
+        return null;
     }
 }
