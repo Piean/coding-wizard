@@ -1,9 +1,17 @@
 package com.piean.idea.plugin.coding.tool;
 
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.ScrollType;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTypesUtil;
+import com.intellij.psi.util.PsiUtilCore;
 import com.piean.idea.plugin.coding.config.ProjectSettingsState;
+import com.piean.idea.plugin.coding.error.HintMsg;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -143,5 +151,19 @@ public class WizardPsiUtil {
             }
         }
         return null;
+    }
+
+    public static Editor positionCursor(@NotNull Project project, @NotNull PsiFile targetFile, @NotNull PsiElement element) {
+        TextRange range = element.getTextRange();
+        Asserts.notNull(range, HintMsg.NEED_TEXT);
+        int textOffset = range.getStartOffset();
+        VirtualFile file = targetFile.getVirtualFile();
+        if (file == null) {
+            file = PsiUtilCore.getVirtualFile(element);
+        }
+        Asserts.notNull(file, HintMsg.NEED_FILE);
+        OpenFileDescriptor descriptor = new OpenFileDescriptor(project, file, textOffset);
+        descriptor.setScrollType(ScrollType.MAKE_VISIBLE); // avoid centering caret in editor if it's already visible
+        return FileEditorManager.getInstance(project).openTextEditor(descriptor, true);
     }
 }

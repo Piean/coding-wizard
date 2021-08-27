@@ -8,6 +8,8 @@ public enum HintMsg {
     NEED_PROJECT("Need a project"),
     NEED_LOCAL_VARIABLE("Please use it on instance variables"),
     NEED_NAME_IDENTIFIER("Need name identifier"),
+    NEED_TEXT("Need text"),
+    NEED_FILE("Need file"),
     ;
     private final String msg;
 

@@ -59,6 +59,13 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <annotator language="JAVA" implementationClass="com.piean.idea.plugin.coding.action.ClassQuickFixAnnotator"/>
+        <localInspection language="JAVA"
+                         displayName="Not serialVersionUID field in Serializable Class"
+                         groupPath="Java"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="com.piean.idea.plugin.coding.inspection.SerializableClassInspection"/>
     </extensions>
 </idea-plugin>
